@@ -13,6 +13,8 @@ class Usuario < ActiveRecord::Base
     true
   end
 
+  validates_presence_of :nombres
+
   validates_length_of :apellidos, maximum: 128
   validates_presence_of :apellidos
 
@@ -33,9 +35,6 @@ class Usuario < ActiveRecord::Base
   validates_length_of :facebook, maximum: 1024
 
   validates_length_of :twitter, maximum: 1024
-
-  validates_length_of :linkedin, maximum: 1024
-
 
   def presenta_nombre
     r = self.nusuario

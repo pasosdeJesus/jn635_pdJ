@@ -11,7 +11,6 @@
     <% end %>
   <% end %>
   <%= grupo_menus empuja: :derecha do %>
-    <%= opcion_menu "Documentacion", "https://github.com/pasosdeJesus/sip/wiki" %>
     <% if current_usuario %>
       <%= despliega_abajo "Administrar" do %>  
         <%= opcion_menu "Perfil", main_app.editar_registro_usuario_path,
@@ -36,6 +35,7 @@
     <% else %>
       <%= opcion_menu "Acerca de", sip.acercade_path %>
       <%= opcion_menu "Iniciar Sesión", main_app.new_usuario_session_path %> 
+      <%= opcion_menu "Inscribirse", main_app.sign_up_path %> 
     <% end %>
   <% end %>
 <% end %>

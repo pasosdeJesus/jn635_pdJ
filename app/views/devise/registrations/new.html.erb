@@ -1,0 +1,72 @@
+<h2>Inscripción</h2>
+<p>
+Esperamos inscripciones de compradores, transportadores
+y productores campesinos.
+</p>
+<p>
+Vea por favor la política de protección de datos personales
+y lo que esperamos de quien se escriba en:
+</p>
+
+<% if (request.ssl? && resource) || Rails.env.development? %>
+  <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+    <div id="errores">
+      <% if f.object.errors.any? %>
+        <div id="error_explanation">
+          <div class="alert alert-error">
+            El formulario tiene 
+            <%= pluralize(f.object.errors.count, "error") %>.
+          </div>
+          <ul>
+            <% f.object.errors.full_messages.each do |msg| %>
+              <li>* <%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <%= f.error_notification %>
+    </div>
+  
+    <div class="form-inputs">
+      <%= f.input :nombres, 
+        label: 'Nombres',
+        :required => true 
+      %>
+      <%= f.input :apellidos, 
+        label: 'Apellidos',
+        :required => true 
+      %>
+ 
+      <%= f.input :email, 
+        label: 'Correo electrónico',
+        :required => true, :autofocus => true 
+      %>
+      <%= f.input :password, 
+        label: 'Clave',
+        :required => true 
+      %>
+      <%= f.input :password_confirmation, 
+        label: 'Confirmación de Clave',
+        :required => true 
+      %>
+      <%= f.input :password_confirmation, 
+        label: 'Confirmación de Clave',
+        :required => true 
+      %>
+ 
+    </div>
+  
+    <div class="form-actions">
+      <%= f.button :submit, "Inscribirse" %>
+    </div>
+  <% end %>
+  <%= render "devise/shared/links" %>
+  
+<% else %>
+  <% urlop = Rails.configuration.action_mailer.default_url_options %>
+  <h3>Favor 
+    <%= link_to 'usar este enlace para inscribirse', 
+      new_usuario_registration_url(urlop) 
+    %>
+  </h3>
+<% end %>
