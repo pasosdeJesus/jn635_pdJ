@@ -14,6 +14,7 @@
   a cargo, plan de porcentaje para ofrenda mensuale para iglesia, plan de 
   porcentaje mensual para ahorro, bitácora de actividades que ha realizado en 
   plataforma.
+
 - A un comprador o facilitador además también podría asociarsele la organización
   o persona jurídica que representa, con datos como Razón Social, NIT, copia de 
   camara de comercio (actualizable periodicamente), nombre de rep. legal,
