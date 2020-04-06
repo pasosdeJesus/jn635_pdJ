@@ -12,8 +12,13 @@ class Usuario < ActiveRecord::Base
 
   belongs_to :clase, foreign_key: "clase_id", 
     validate: true, class_name: "Sip::Clase", optional: true
+
   belongs_to :departamento, foreign_key: "departamento_id", 
     validate: true, class_name: "Sip::Departamento"
+
+  belongs_to :grupo, foreign_key: "grupo_id", 
+    validate: true, class_name: "Sip::Grupo"
+
   belongs_to :municipio, foreign_key: "municipio_id", 
     validate: true, class_name: "Sip::Municipio"
 

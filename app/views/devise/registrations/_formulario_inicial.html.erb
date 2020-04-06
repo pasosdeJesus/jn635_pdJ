@@ -69,6 +69,19 @@
 
 <div class='row'>
   <div class='col-sm-6'>
+    <%= f.association :grupo, 
+      collection: Sip::Grupo.habilitados,
+      label: 'Perfil',
+      label_method: :nombre,
+
+      :required => true, 
+      :autofocus => true 
+    %>
+  </div>
+</div> <!-- row -->
+ 
+<div class='row'>
+  <div class='col-sm-6'>
     <%= f.input :password, 
       label: 'Clave',
       :required => true 

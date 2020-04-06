@@ -1574,6 +1574,7 @@ CREATE TABLE public.usuario (
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
     unconfirmed_email character varying,
+    grupo_id integer,
     CONSTRAINT usuario_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion))),
     CONSTRAINT usuario_rol_check CHECK ((rol >= 1))
 );
@@ -2510,6 +2511,14 @@ ALTER TABLE ONLY public.heb412_gen_campoplantillahcm
 
 
 --
+-- Name: usuario fk_rails_e6583a32e8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.usuario
+    ADD CONSTRAINT fk_rails_e6583a32e8 FOREIGN KEY (grupo_id) REFERENCES public.sip_grupo(id);
+
+
+--
 -- Name: mr519_gen_encuestausuario fk_rails_eccb6f9972; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2752,6 +2761,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200405152422'),
 ('20200405161236'),
 ('20200405170822'),
-('20200405182339');
+('20200405182339'),
+('20200406022353');
 
 

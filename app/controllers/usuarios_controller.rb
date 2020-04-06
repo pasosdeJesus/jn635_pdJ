@@ -11,7 +11,7 @@ class UsuariosController < Heb412Gen::ModelosController
       "nombres",
       "apellidos",
       "email",
-      "sip_grupo_ids",
+      "grupo",
       "habilitado",
     ]
   end
@@ -41,7 +41,7 @@ class UsuariosController < Heb412Gen::ModelosController
         "telefono_con_whatsapp",
         "email",
         "tema",
-        "sip_grupo",
+        "grupo",
         "departamento",
         "municipio",
         "clase",
@@ -72,7 +72,7 @@ class UsuariosController < Heb412Gen::ModelosController
         "id",
         "nombres",
         "apellidos",
-        "grupos",
+        "grupo",
         "email",
         "telefono",
         "telefono_con_whatsapp",
@@ -161,6 +161,7 @@ class UsuariosController < Heb412Gen::ModelosController
       :failed_attempts, 
       :fechacreacion_localizada, 
       :fechadeshabilitacion_localizada, 
+      :grupo_id,
       :id, 
       :last_sign_in_at, 
       :last_sign_in_ip, 
@@ -180,7 +181,6 @@ class UsuariosController < Heb412Gen::ModelosController
       :unconfirmed_email,
       :unlock_token, 
       :web, 
-      :sip_grupo_ids => []
     )
     return p
   end
