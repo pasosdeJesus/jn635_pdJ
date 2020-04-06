@@ -38,6 +38,7 @@ class ::RegistrationsController < Devise::RegistrationsController
       :departamento_id,
       :email, 
       :fechacreacion,
+      :grupo_id,
       :municipio_id,
       :nombres, 
       :nusuario, 
