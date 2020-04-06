@@ -1,0 +1,45 @@
+<h2>Editar Perfil (<%= @usuario.id %>)</h2>
+
+<%= simple_form_for(
+  resource, 
+  :as => resource_name, 
+  :url => registro_usuario_path(resource_name), 
+  :html => { :method => :put }) do |f| %>
+
+  <% render partial: 'sip/hogar/errores', locals: {f: f} %>
+
+  <%= render partial: 'formulario_inicial', locals: {f: f} %>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <p>Aún esperando confirmación para: 
+    <%= resource.unconfirmed_email %>
+    </p>
+  <% end %>
+
+  <div class='row'>
+    <div class='offset-sm-3 col-sm-6'>
+      <%= f.input :fechadeshabilitacion_localizada, 
+        label: 'Fecha de deshabilitación',
+        hint: " deje en blanco, excepto si está borrando sus datos personales", 
+        wrapper_html: {
+          class: 'alert alert-danger'
+        },
+        required: false %>
+    </div>
+  </div>
+
+
+  <div class='row'>
+    <div class='offset-sm-3 col-sm-6'>
+      <%= f.input :current_password, 
+        label: 'Clave actual',
+        hint: " requerida para confirmar sus cambios", 
+        required: true %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Actualizar" %>
+  </div>
+<% end %>
+

@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://github.com/pasosdeJesus/sip.git
-  revision: 96cb656bf025ec113b015340d537df8e48d0b2df
+  revision: 83333f27faf6e18047415ff1b5f417a0125ce96d
   specs:
     sip (2.0.b10)
       cancancan
@@ -133,7 +133,7 @@ GEM
       activesupport (>= 5.0.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    loofah (2.4.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)

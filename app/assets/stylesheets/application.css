@@ -14,3 +14,13 @@
  *= require sip/application.css
  *= require_self
  */
+
+.hint {
+  font-size: 0.6em;
+}
+
+
+.derechos {
+  align-text: right;
+  font-size: 0.8em;
+}

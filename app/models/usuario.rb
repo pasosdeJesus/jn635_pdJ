@@ -9,6 +9,14 @@ class Usuario < ActiveRecord::Base
   campofecha_localizado :confirmed_at
   campofecha_localizado :locked_at
 
+
+  belongs_to :clase, foreign_key: "clase_id", 
+    validate: true, class_name: "Sip::Clase", optional: true
+  belongs_to :departamento, foreign_key: "departamento_id", 
+    validate: true, class_name: "Sip::Departamento"
+  belongs_to :municipio, foreign_key: "municipio_id", 
+    validate: true, class_name: "Sip::Municipio"
+
   def email_required?
     true
   end
@@ -21,8 +29,6 @@ class Usuario < ActiveRecord::Base
   validates_presence_of :departamento_id
   
   validates_presence_of :municipio_id
-
-  validates_presence_of :clase_id
 
   validates_length_of :barrio_vereda, maximum: 128
   validates_presence_of :barrio_vereda

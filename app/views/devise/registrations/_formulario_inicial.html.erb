@@ -1,0 +1,84 @@
+<div class='row'>
+  <div class='col-sm-6'>
+    <%= f.input :nombres, 
+      label: 'Nombres',
+      :required => true 
+    %>
+  </div>
+  <div class='col-sm-6'>
+    <%= f.input :apellidos, 
+      label: 'Apellidos',
+      :required => true 
+    %>
+  </div>
+</div> <!-- row -->
+
+<div class='row'>
+  <div class='col-sm-6'>
+    <%= f.input :departamento, 
+      collection: Sip::Departamento.habilitados.where(id_pais: 170),
+      label: 'Departamento donde vive',
+      label_method: :nombre,
+      value_method: :id,
+      :required => true %>
+
+  </div>
+  <div class='col-sm-6'>
+    <%= f.input :municipio, 
+      collection: Sip::Municipio.habilitados.where(
+        id_departamento: f.object.departamento_id),
+        label: 'Municipio donde vive',
+        label_method: :nombre,
+        value_method: :id,
+        :required => true %>
+  </div>
+</div> <!-- row -->
+
+<div class='row'>
+  <div class='col-sm-6'>
+    <%= f.input :clase, 
+      collection: Sip::Clase.habilitados.where(
+        id_municipio: f.object.municipio_id),
+        label: 'Centro Poblado donde vive',
+        label_method: :nombre,
+        value_method: :id,
+        hint: 'deje en blanco si vive en zona rural'
+      %>
+  </div>
+  <div class='col-sm-6'>
+    <%= f.input :barrio_vereda, 
+      label: 'Barrio o Verreda donde vive',
+      :required => true %>
+  </div>
+</div> <!-- row -->
+
+<div class='row'>
+  <div class='col-sm-6'>
+    <%= f.input :email, 
+      label: 'Correo electrónico',
+      :required => true, :autofocus => true 
+    %>
+  </div>
+  <div class='col-sm-6'>
+    <%= f.association :tema, 
+      collection: Sip::Tema.habilitados,
+      label_method: :nombre,
+      :required => false %>
+  </div>
+</div> <!-- row -->
+
+<div class='row'>
+  <div class='col-sm-6'>
+    <%= f.input :password, 
+      label: 'Clave',
+      :required => true 
+    %>
+  </div>
+  <div class='col-sm-6'>
+    <%= f.input :password_confirmation, 
+      label: 'Confirmación de Clave',
+      :required => true 
+    %>
+  </div>
+</div> <!-- row -->
+

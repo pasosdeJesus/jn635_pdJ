@@ -50,7 +50,10 @@ group :development do
   gem 'spring'
 end
 
-gem 'sip', github: 'pasosdeJesus/sip'
+gem 'sip', 
+  github: 'pasosdeJesus/sip'
+  #path: '../sip/'
+
 
 gem 'mr519_gen', github: 'pasosdeJesus/mr519_gen'
 

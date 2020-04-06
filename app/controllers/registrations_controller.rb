@@ -31,9 +31,24 @@ class ::RegistrationsController < Devise::RegistrationsController
   private
 
   def sign_up_params
-    allow = [:email, :nusuario, :password, :password_confirmation, 
-             :fechacreacion]
+    allow = [
+      :apellidos,
+      :barrio_vereda,
+      :clase_id,
+      :departamento_id,
+      :email, 
+      :fechacreacion,
+      :municipio_id,
+      :nombres, 
+      :nusuario, 
+      :password, 
+      :password_confirmation
+    ]
     params.require(resource_name).permit(allow)
+  end
+
+  def account_update_params
+    sign_up_params
   end
 
 end
