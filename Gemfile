@@ -39,7 +39,7 @@ gem 'simple_form'
 
 gem 'twitter_cldr' 
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo'
 
 gem 'webpacker'
 
@@ -56,6 +56,13 @@ group :development do
 
   gem 'spring'
 end
+
+group :test do
+
+  gem 'simplecov'
+
+end
+
 
 gem 'sip', 
   github: 'pasosdeJesus/sip'

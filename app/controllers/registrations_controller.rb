@@ -44,6 +44,8 @@ class ::RegistrationsController < Devise::RegistrationsController
       :nusuario, 
       :password, 
       :password_confirmation,
+      :telefono,
+      :telefono_con_whatsapp,
       :tema_id
     ]
     params.require(resource_name).permit(allow)
