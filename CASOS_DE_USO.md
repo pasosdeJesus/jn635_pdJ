@@ -1,5 +1,12 @@
 ### CASOS DE USO
 
+## REGISTRO
+
+* Cualquier persona puede registrarse con un correo que es validado
+  con uno de los grupos Comprador, Transportador o Productor Campesino.
+* Un usuario que se autentica puede modificar completamente sus
+  datos personales y si lo requiere deshabilitar su cuenta.
+
 ## COMPRADOR
 
 * Puede ver oferta de productos vigentes y buscar  de varias formas.

@@ -6,6 +6,11 @@ Aplicación de comercio justo especialmente para productos campesinos
 
 ![Logo de jn635_pdJ](https://raw.githubusercontent.com/pasosdeJesus/jn635_pdJ/master/app/assets/images/logo.jpg)
 
+## Funcionalmente que opera
+
+De los casos de uso, ya opera el registro de usuarios.
+Ver [CASOS_DE_USO.md]
+
 ## Documentación para desarrolladores
 
 ### Requisitos 📋
