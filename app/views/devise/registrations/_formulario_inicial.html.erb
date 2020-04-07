@@ -15,7 +15,7 @@
 
 <div class='row'>
   <div class='col-sm-6'>
-    <%= f.input :departamento, 
+    <%= f.input :departamento_id, 
       collection: Sip::Departamento.habilitados.where(id_pais: 170),
       label: 'Departamento donde vive',
       label_method: :nombre,
@@ -24,7 +24,7 @@
 
   </div>
   <div class='col-sm-6'>
-    <%= f.input :municipio, 
+    <%= f.input :municipio_id, 
       collection: Sip::Municipio.habilitados.where(
         id_departamento: f.object.departamento_id),
         label: 'Municipio donde vive',
@@ -36,7 +36,7 @@
 
 <div class='row'>
   <div class='col-sm-6'>
-    <%= f.input :clase, 
+    <%= f.input :clase_id, 
       collection: Sip::Clase.habilitados.where(
         id_municipio: f.object.municipio_id),
         label: 'Centro Poblado donde vive',

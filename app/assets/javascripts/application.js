@@ -10,6 +10,29 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require sip/application
+//------ require bootstrap-datepicker/dist/js/bootstrap-datepicker
+//= require sip/motor
+//= require heb412_gen/motor
 //= require_tree .
+
+document.addEventListener('turbolinks:load', function() {
+  var root;
+  root = typeof exports !== "undefined" && exports !== null ? 
+    exports : window;
+  sip_prepara_eventos_comunes(root, null, false);
+  heb412_gen_prepara_eventos_comunes(root);
+  //mr519_gen_prepara_eventos_comunes(root);
+
+  $(document).on('change', 'select[id$=_departamento]', (e) => {
+    debugger
+    llena_municipio($(e.target), root, true)
+  }
+  )
+  $(document).on('change', 'select[id$=_municipio]', (e) => {
+    llena_clase($(e.target), root, true)
+  }
+  )
+
+});
+
 

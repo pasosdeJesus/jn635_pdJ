@@ -1534,7 +1534,7 @@ CREATE SEQUENCE public.usuario_id_seq
 --
 
 CREATE TABLE public.usuario (
-    nusuario character varying(15) NOT NULL,
+    nusuario character varying(1024) NOT NULL,
     password character varying(64) DEFAULT ''::character varying NOT NULL,
     descripcion character varying(50),
     rol integer DEFAULT 4,
@@ -1563,7 +1563,7 @@ CREATE TABLE public.usuario (
     apellidos character varying(128) DEFAULT 'N'::character varying NOT NULL,
     departamento_id integer DEFAULT 43 NOT NULL,
     municipio_id integer DEFAULT 480 NOT NULL,
-    clase_id integer DEFAULT 10128 NOT NULL,
+    clase_id integer DEFAULT 10128,
     barrio_vereda character varying(128),
     telefono character varying(128) DEFAULT 'N'::character varying NOT NULL,
     telefono_con_whatsapp boolean,
@@ -2762,6 +2762,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200405161236'),
 ('20200405170822'),
 ('20200405182339'),
-('20200406022353');
+('20200406022353'),
+('20200406222756'),
+('20200407032317');
 
 

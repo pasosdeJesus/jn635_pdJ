@@ -6,7 +6,14 @@ git_source(:github) do |repo_name|
 end
 
 
+gem 'bcrypt'
+
+gem 'bootsnap', '>=1.1.0', require: false
+
 gem 'cancancan'
+
+gem 'cocoon', git: 'https://github.com/vtamara/cocoon.git', 
+  branch: 'new_id_with_ajax' # Formularios anidados (algunos con ajax)
 
 gem 'coffee-rails' # Use CoffeeScript for .coffee assets and views
 

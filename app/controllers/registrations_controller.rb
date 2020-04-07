@@ -43,7 +43,8 @@ class ::RegistrationsController < Devise::RegistrationsController
       :nombres, 
       :nusuario, 
       :password, 
-      :password_confirmation
+      :password_confirmation,
+      :tema_id
     ]
     params.require(resource_name).permit(allow)
   end

@@ -34,6 +34,13 @@ GIT
       twitter_cldr
       will_paginate
 
+GIT
+  remote: https://github.com/vtamara/cocoon.git
+  revision: 088c8d9dcce7f51cf3a968398047eaac7a37718b
+  branch: new_id_with_ajax
+  specs:
+    cocoon (1.2.11)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -95,6 +102,8 @@ GEM
     andand (1.3.3)
     bcrypt (3.1.13)
     bindex (0.8.1)
+    bootsnap (1.4.6)
+      msgpack (~> 1.0)
     builder (3.2.4)
     camertron-eprun (1.1.1)
     cancancan (3.1.0)
@@ -148,6 +157,7 @@ GEM
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.0)
+    msgpack (1.3.3)
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
@@ -257,7 +267,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
+  bootsnap (>= 1.1.0)
   cancancan
+  cocoon!
   coffee-rails
   colorize
   devise
