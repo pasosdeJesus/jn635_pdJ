@@ -107,7 +107,7 @@ Ver <https://github.com/pasosdeJesus/sip/blob/master/doc/requisitos.md>
 ### Pruebas ⚙️
 
 Se harán pruebas a modelos, rutas, controladores y vistas en 
-`tests`
+directorio `test`
 
 Se harán pruebas del sistema con sideex (ver carpeta `test/sideex` y 
 documentación de como hacerlas en 
