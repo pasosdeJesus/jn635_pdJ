@@ -9,7 +9,7 @@ Aplicación de comercio justo especialmente para productos campesinos
 ## Funcionalmente que opera
 
 De los casos de uso, ya opera el registro de usuarios.
-Ver [CASOS_DE_USO.md]
+Ver [CASOS_DE_USO.md](https://github.com/pasosdeJesus/jn635_pdJ/blob/master/CASOS_DE_USO.md)
 
 ## Documentación para desarrolladores
 
