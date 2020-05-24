@@ -33,6 +33,8 @@ gem 'rails' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 
 gem 'rails-i18n'
 
+gem 'react-rails'
+
 gem 'sassc-rails' # Use SCSS for stylesheets
 
 gem 'simple_form'
