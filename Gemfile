@@ -45,7 +45,10 @@ gem 'tzinfo'
 
 gem 'webpacker'
 
+gem 'webpacker-react', "~> 1.0.0.beta.1"
+
 gem 'will_paginate'
+
 
 group :development, :test do
   #gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

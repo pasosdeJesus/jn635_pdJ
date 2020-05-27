@@ -144,6 +144,8 @@ class UsuariosController < Heb412Gen::ModelosController
   def reconfirma
   end
 
+  def datosextra
+  end
   private
 
   def usuario_params

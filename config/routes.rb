@@ -35,5 +35,7 @@ Rails.application.routes.draw do
     root 'sip/hogar#index'
   end
 
+  get 'usuarios/datosextra' => 'usuarios#datosextra'
   mount Sip::Engine, at: "/mercadocampesino"
+  
 end

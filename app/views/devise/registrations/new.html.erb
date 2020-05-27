@@ -7,7 +7,7 @@ y productores campesinos.
 Vea por favor la política de protección de datos personales
 y lo que esperamos de quien se escriba en:
 </p>
-
+<% byebug %>
 <% if (request.ssl? && resource) || Rails.env.development? %>
   <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
 
