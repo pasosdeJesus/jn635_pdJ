@@ -91,10 +91,10 @@ Ver <https://github.com/pasosdeJesus/sip/blob/master/doc/requisitos.md>
   bin/rails s -p 2300 -b 0.0.0.0
 ```
 * Examine con un navegador que tenga habilitadas las galletas (cookies) 
-  en el puerto 2300: `http://127.0.0.1:2300`.  (Por eso si usa el 
+  en el puerto 2300: `http://127.0.0.1:2300/mercadocampesino/`.  (Por eso si usa el 
   navegador `w3m` añada la opción `-cookie`) 
 * Cuando requiera detener basta que de Control-C o que busque el
-  proceso con ruby que corre en el puerto 3000 y lo elimine con `kill`:
+  proceso con ruby que corre en el puerto 2300 y lo elimine con `kill`:
   ```sh
   ps ax | grep "ruby.*2300"
   kill 323122  # cambiar 323122 por número de proceso que de el anterior
