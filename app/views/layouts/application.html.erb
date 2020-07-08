@@ -1,7 +1,6 @@
 <% content_for :titulo do %>
     <%= Sip.titulo %>
 <% end %>
-
 <% content_for :menu do %>
   <%= grupo_menus do %>
     <% if !current_usuario.nil? %>
@@ -17,6 +16,8 @@
           desplegable: true %>
         <% if can? :manage, ::Usuario %>
           <%= opcion_menu "Usuarios", main_app.usuarios_path,
+            desplegable: true %>
+          <%= opcion_menu "Completar Información", 'usuarios/datosextra',
             desplegable: true %>
         <% end %>
         <% if can? :manage, :tablasbasicas %>
