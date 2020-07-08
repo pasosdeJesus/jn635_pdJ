@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get 'sign_up' => 'registrations#new', as: :sign_up
     end
 
+    get 'usuarios/datosextra' => 'usuarios#datosextra'
     devise_for :usuarios, module: :devise, 
       controllers: { registrations: "registrations" }
     #devise_for :usuarios, :skip => [:registrations], module: :devise
@@ -35,7 +36,6 @@ Rails.application.routes.draw do
     root 'sip/hogar#index'
   end
 
-  get 'usuarios/datosextra' => 'usuarios#datosextra'
   mount Sip::Engine, at: "/mercadocampesino"
   
 end
