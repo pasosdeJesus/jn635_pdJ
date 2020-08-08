@@ -10,6 +10,7 @@ conexion = ActiveRecord::Base.connection();
 Sip::carga_semillas_sql(conexion, 'sip', :datos)
 Sip::carga_semillas_sql(conexion, nil, :cambios)
 
+# sip@localhost   sip123
 conexion.execute("INSERT INTO public.usuario 
                  (nusuario, email, encrypted_password, password, 
                   fechacreacion, created_at, updated_at, rol) 
