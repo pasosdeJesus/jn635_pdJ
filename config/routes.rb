@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  
-  scope 'mercadocampesino' do
+ 
+
+  rutarel = ENV.fetch('RUTA_RELATIVA', 'mercadocampesino/')
+  scope rutarel do 
     devise_scope :usuario do
       get 'sign_out' => 'devise/sessions#destroy', as: 'sign_out'
 
@@ -35,5 +37,7 @@ Rails.application.routes.draw do
     root 'sip/hogar#index'
   end
 
-  mount Sip::Engine, at: "/mercadocampesino"
+  mount Heb412Gen::Engine, at: rutarel, as: 'heb412_gen'
+  mount Mr519Gen::Engine, at: rutarel, as: 'mr519_gen'
+  mount Sip::Engine, at: rutarel, as: 'sip'
 end
