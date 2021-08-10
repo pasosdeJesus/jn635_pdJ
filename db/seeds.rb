@@ -1,14 +1,13 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
 conexion = ActiveRecord::Base.connection();
 
+# De motores
 Sip::carga_semillas_sql(conexion, 'sip', :datos)
-Sip::carga_semillas_sql(conexion, nil, :cambios)
+motor = ['heb412_gen', './']
+motor.each do |m|
+    Sip::carga_semillas_sql(conexion, m, :cambios)
+    Sip::carga_semillas_sql(conexion, m, :datos)
+end
+
 
 conexion.execute("INSERT INTO public.usuario 
                  (nusuario, email, encrypted_password, password, 

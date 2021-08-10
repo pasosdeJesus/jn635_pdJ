@@ -1,0 +1,24 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: <%= ENV.fetch('BD_USUARIO', 'sipdes') %>
+  password: <%= ENV.fetch('BD_CLAVE') %>
+  host: <%= ENV.fetch('BD_SERVIDOR', '/var/www/var/run/postgresql') %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch('BD_DES', 'jn635pdJ_desarrollo') %>
+
+# Advertencia: La base de datos definida como "test" será eliminada
+# y re-generada desde su base de datos de desarrollo con ejecute "rake".
+# No establezca esa base de datos como la misma de desarrollo o producción.
+test:
+  <<: *default
+  database: <%= ENV.fetch('BD_PRUEBA', 'jn635pdJ_pruebas') %>
+
+production:
+  <<: *default
+  database: <%= ENV.fetch('BD_PRO', 'jn635pdJ_produccion') %>
+
+

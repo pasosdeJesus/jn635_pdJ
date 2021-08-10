@@ -23,17 +23,32 @@ gem 'devise-i18n'
 
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 
-gem 'paperclip'
+gem 'kt-paperclip'
+
+gem 'lazybox' # Dialogo modal
+
+gem 'libxml-ruby'
+
+gem 'nokogiri', '>=1.11.1'
+
+gem 'odf-report' # Genera ODT
+
+gem 'prawn' # Para generar PDF
 
 gem 'pg'  # Use postgresql as the database for Active Record
 
-gem 'puma' # Use Puma as the app server
 
 gem 'rails' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 
 gem 'rails-i18n'
 
+gem 'redcarpet'
+
 gem 'react-rails'
+
+gem 'rubyzip', '>= 2.0'
+
+gem 'rspreadsheet'
 
 gem 'sassc-rails' # Use SCSS for stylesheets
 
@@ -47,13 +62,37 @@ gem 'webpacker'
 
 gem 'will_paginate'
 
+
+#####
+# Motores que se sobrecargan vistas (deben ponerse en orden de apilamiento 
+# lógico y no alfabetico como las gemas anteriores) 
+
+
+gem 'sip', # Motor generico
+  git: 'https://github.com/pasosdeJesus/sip.git', branch: :main
+  #path: '../sip'
+
+gem 'mr519_gen', # Motor de gestion de formularios y encuestas
+  git: 'https://github.com/pasosdeJesus/mr519_gen.git', branch: :main
+  #path: '../mr519_gen'
+
+gem 'heb412_gen',  # Motor de nube y llenado de plantillas
+  git: 'https://github.com/pasosdeJesus/heb412_gen.git', branch: :main
+  #path: '../heb412_gen'
+
+
 group :development, :test do
   #gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   
   gem 'colorize' # Colores en terminal 
+
+  gem 'dotenv-rails'
 end
 
 group :development do
+
+  gem 'puma' # Use Puma as the app server
+
   gem 'web-console', '>= 3.3.0'
 
   gem 'spring'
@@ -65,14 +104,9 @@ group :test do
 
 end
 
+group :production do
 
-gem 'sip', 
-  github: 'pasosdeJesus/sip'
-  #path: '../sip/'
+  gem 'unicorn'
 
-
-gem 'mr519_gen', github: 'pasosdeJesus/mr519_gen'
-
-gem 'heb412_gen', github: 'pasosdeJesus/heb412_gen'
-
+end
 

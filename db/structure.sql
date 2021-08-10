@@ -31,6 +31,41 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: f_unaccent(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.f_unaccent(text) RETURNS text
+    LANGUAGE sql IMMUTABLE
+    AS $_$
+      SELECT public.unaccent('public.unaccent', $1)  
+      $_$;
+
+
+--
+-- Name: sip_edad_de_fechanac_fecharef(integer, integer, integer, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.sip_edad_de_fechanac_fecharef(anionac integer, mesnac integer, dianac integer, anioref integer, mesref integer, diaref integer) RETURNS integer
+    LANGUAGE sql IMMUTABLE
+    AS $$
+        SELECT CASE 
+          WHEN anionac IS NULL THEN NULL
+          WHEN anioref IS NULL THEN NULL
+          WHEN mesnac IS NULL OR dianac IS NULL OR mesref IS NULL OR diaref IS NULL THEN 
+            anioref-anionac 
+          WHEN mesnac < mesref THEN
+            anioref-anionac
+          WHEN mesnac > mesref THEN
+            anioref-anionac-1
+          WHEN dianac > diaref THEN
+            anioref-anionac-1
+          ELSE 
+            anioref-anionac
+        END 
+      $$;
+
+
+--
 -- Name: soundexesp(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -250,6 +285,38 @@ CREATE SEQUENCE public.heb412_gen_campoplantillahcr_id_seq
 --
 
 ALTER SEQUENCE public.heb412_gen_campoplantillahcr_id_seq OWNED BY public.heb412_gen_campoplantillahcr.id;
+
+
+--
+-- Name: heb412_gen_carpetaexclusiva; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.heb412_gen_carpetaexclusiva (
+    id bigint NOT NULL,
+    carpeta character varying(2048),
+    grupo_id integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: heb412_gen_carpetaexclusiva_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.heb412_gen_carpetaexclusiva_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: heb412_gen_carpetaexclusiva_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.heb412_gen_carpetaexclusiva_id_seq OWNED BY public.heb412_gen_carpetaexclusiva.id;
 
 
 --
@@ -521,7 +588,6 @@ ALTER SEQUENCE public.mr519_gen_encuestapersona_id_seq OWNED BY public.mr519_gen
 CREATE TABLE public.mr519_gen_encuestausuario (
     id bigint NOT NULL,
     usuario_id integer NOT NULL,
-    formulario_id integer,
     fecha date,
     fechainicio date NOT NULL,
     fechafin date,
@@ -610,6 +676,41 @@ ALTER SEQUENCE public.mr519_gen_opcioncs_id_seq OWNED BY public.mr519_gen_opcion
 
 
 --
+-- Name: mr519_gen_planencuesta; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mr519_gen_planencuesta (
+    id bigint NOT NULL,
+    fechaini date,
+    fechafin date,
+    formulario_id integer,
+    plantillacorreoinv_id integer,
+    adurl character varying(32),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: mr519_gen_planencuesta_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.mr519_gen_planencuesta_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: mr519_gen_planencuesta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.mr519_gen_planencuesta_id_seq OWNED BY public.mr519_gen_planencuesta.id;
+
+
+--
 -- Name: mr519_gen_respuestafor; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -678,87 +779,6 @@ ALTER SEQUENCE public.mr519_gen_valorcampo_id_seq OWNED BY public.mr519_gen_valo
 
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
-);
-
-
---
--- Name: sip_actorsocial; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_actorsocial (
-    id bigint NOT NULL,
-    grupoper_id integer NOT NULL,
-    telefono character varying(500),
-    fax character varying(500),
-    direccion character varying(500),
-    pais_id integer,
-    web character varying(500),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    fechadeshabilitacion date
-);
-
-
---
--- Name: sip_actorsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_actorsocial_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_actorsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.sip_actorsocial_id_seq OWNED BY public.sip_actorsocial.id;
-
-
---
--- Name: sip_actorsocial_persona; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_actorsocial_persona (
-    id bigint NOT NULL,
-    persona_id integer NOT NULL,
-    actorsocial_id integer,
-    perfilactorsocial_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    correo character varying(100)
-);
-
-
---
--- Name: sip_actorsocial_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.sip_actorsocial_persona_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sip_actorsocial_persona_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.sip_actorsocial_persona_id_seq OWNED BY public.sip_actorsocial_persona.id;
-
-
---
--- Name: sip_actorsocial_sectoractor; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.sip_actorsocial_sectoractor (
-    actorsocial_id integer,
-    sectoractor_id integer
 );
 
 
@@ -921,6 +941,16 @@ CREATE TABLE public.sip_etiqueta (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     CONSTRAINT etiqueta_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
+);
+
+
+--
+-- Name: sip_etiqueta_municipio; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_etiqueta_municipio (
+    etiqueta_id bigint NOT NULL,
+    municipio_id bigint NOT NULL
 );
 
 
@@ -1130,6 +1160,88 @@ CREATE TABLE public.sip_oficina (
 
 
 --
+-- Name: sip_orgsocial; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_orgsocial (
+    id bigint NOT NULL,
+    grupoper_id integer NOT NULL,
+    telefono character varying(500),
+    fax character varying(500),
+    direccion character varying(500),
+    pais_id integer,
+    web character varying(500),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    fechadeshabilitacion date
+);
+
+
+--
+-- Name: sip_orgsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_orgsocial_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_orgsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_orgsocial_id_seq OWNED BY public.sip_orgsocial.id;
+
+
+--
+-- Name: sip_orgsocial_persona; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_orgsocial_persona (
+    id bigint NOT NULL,
+    persona_id integer NOT NULL,
+    orgsocial_id integer,
+    perfilorgsocial_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    correo character varying(100),
+    cargo character varying(254)
+);
+
+
+--
+-- Name: sip_orgsocial_persona_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_orgsocial_persona_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_orgsocial_persona_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_orgsocial_persona_id_seq OWNED BY public.sip_orgsocial_persona.id;
+
+
+--
+-- Name: sip_orgsocial_sectororgsocial; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_orgsocial_sectororgsocial (
+    orgsocial_id integer,
+    sectororgsocial_id integer
+);
+
+
+--
 -- Name: sip_pais_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1166,10 +1278,10 @@ CREATE TABLE public.sip_pais (
 
 
 --
--- Name: sip_perfilactorsocial; Type: TABLE; Schema: public; Owner: -
+-- Name: sip_perfilorgsocial; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sip_perfilactorsocial (
+CREATE TABLE public.sip_perfilorgsocial (
     id bigint NOT NULL,
     nombre character varying(500) NOT NULL,
     observaciones character varying(5000),
@@ -1181,10 +1293,10 @@ CREATE TABLE public.sip_perfilactorsocial (
 
 
 --
--- Name: sip_perfilactorsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sip_perfilorgsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.sip_perfilactorsocial_id_seq
+CREATE SEQUENCE public.sip_perfilorgsocial_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1193,10 +1305,10 @@ CREATE SEQUENCE public.sip_perfilactorsocial_id_seq
 
 
 --
--- Name: sip_perfilactorsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: sip_perfilorgsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.sip_perfilactorsocial_id_seq OWNED BY public.sip_perfilactorsocial.id;
+ALTER SEQUENCE public.sip_perfilorgsocial_id_seq OWNED BY public.sip_perfilorgsocial.id;
 
 
 --
@@ -1266,10 +1378,10 @@ CREATE TABLE public.sip_persona_trelacion (
 
 
 --
--- Name: sip_sectoractor; Type: TABLE; Schema: public; Owner: -
+-- Name: sip_sectororgsocial; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sip_sectoractor (
+CREATE TABLE public.sip_sectororgsocial (
     id bigint NOT NULL,
     nombre character varying(500) NOT NULL,
     observaciones character varying(5000),
@@ -1281,10 +1393,10 @@ CREATE TABLE public.sip_sectoractor (
 
 
 --
--- Name: sip_sectoractor_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sip_sectororgsocial_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.sip_sectoractor_id_seq
+CREATE SEQUENCE public.sip_sectororgsocial_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1293,10 +1405,10 @@ CREATE SEQUENCE public.sip_sectoractor_id_seq
 
 
 --
--- Name: sip_sectoractor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: sip_sectororgsocial_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.sip_sectoractor_id_seq OWNED BY public.sip_sectoractor.id;
+ALTER SEQUENCE public.sip_sectororgsocial_id_seq OWNED BY public.sip_sectororgsocial.id;
 
 
 --
@@ -1518,6 +1630,47 @@ CREATE TABLE public.sip_ubicacion (
 
 
 --
+-- Name: sip_ubicacionpre; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_ubicacionpre (
+    id bigint NOT NULL,
+    nombre character varying(2000) NOT NULL COLLATE public.es_co_utf_8,
+    pais_id integer,
+    departamento_id integer,
+    municipio_id integer,
+    clase_id integer,
+    lugar character varying(500),
+    sitio character varying(500),
+    tsitio_id integer,
+    latitud double precision,
+    longitud double precision,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    nombre_sin_pais character varying(500)
+);
+
+
+--
+-- Name: sip_ubicacionpre_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_ubicacionpre_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_ubicacionpre_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_ubicacionpre_id_seq OWNED BY public.sip_ubicacionpre.id;
+
+
+--
 -- Name: usuario_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1602,6 +1755,13 @@ ALTER TABLE ONLY public.heb412_gen_campoplantillahcr ALTER COLUMN id SET DEFAULT
 
 
 --
+-- Name: heb412_gen_carpetaexclusiva id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heb412_gen_carpetaexclusiva ALTER COLUMN id SET DEFAULT nextval('public.heb412_gen_carpetaexclusiva_id_seq'::regclass);
+
+
+--
 -- Name: heb412_gen_doc id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1672,6 +1832,13 @@ ALTER TABLE ONLY public.mr519_gen_opcioncs ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: mr519_gen_planencuesta id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.mr519_gen_planencuesta ALTER COLUMN id SET DEFAULT nextval('public.mr519_gen_planencuesta_id_seq'::regclass);
+
+
+--
 -- Name: mr519_gen_respuestafor id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1683,20 +1850,6 @@ ALTER TABLE ONLY public.mr519_gen_respuestafor ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.mr519_gen_valorcampo ALTER COLUMN id SET DEFAULT nextval('public.mr519_gen_valorcampo_id_seq'::regclass);
-
-
---
--- Name: sip_actorsocial id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_actorsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_actorsocial_id_seq'::regclass);
-
-
---
--- Name: sip_actorsocial_persona id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_actorsocial_persona ALTER COLUMN id SET DEFAULT nextval('public.sip_actorsocial_persona_id_seq'::regclass);
 
 
 --
@@ -1728,17 +1881,31 @@ ALTER TABLE ONLY public.sip_grupoper ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: sip_perfilactorsocial id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sip_orgsocial id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_perfilactorsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_perfilactorsocial_id_seq'::regclass);
+ALTER TABLE ONLY public.sip_orgsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_orgsocial_id_seq'::regclass);
 
 
 --
--- Name: sip_sectoractor id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sip_orgsocial_persona id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_sectoractor ALTER COLUMN id SET DEFAULT nextval('public.sip_sectoractor_id_seq'::regclass);
+ALTER TABLE ONLY public.sip_orgsocial_persona ALTER COLUMN id SET DEFAULT nextval('public.sip_orgsocial_persona_id_seq'::regclass);
+
+
+--
+-- Name: sip_perfilorgsocial id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_perfilorgsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_perfilorgsocial_id_seq'::regclass);
+
+
+--
+-- Name: sip_sectororgsocial id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_sectororgsocial ALTER COLUMN id SET DEFAULT nextval('public.sip_sectororgsocial_id_seq'::regclass);
 
 
 --
@@ -1760,6 +1927,13 @@ ALTER TABLE ONLY public.sip_tema ALTER COLUMN id SET DEFAULT nextval('public.sip
 --
 
 ALTER TABLE ONLY public.sip_trivalente ALTER COLUMN id SET DEFAULT nextval('public.sip_trivalente_id_seq'::regclass);
+
+
+--
+-- Name: sip_ubicacionpre id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacionpre ALTER COLUMN id SET DEFAULT nextval('public.sip_ubicacionpre_id_seq'::regclass);
 
 
 --
@@ -1816,6 +1990,14 @@ ALTER TABLE ONLY public.heb412_gen_campoplantillahcm
 
 ALTER TABLE ONLY public.heb412_gen_campoplantillahcr
     ADD CONSTRAINT heb412_gen_campoplantillahcr_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: heb412_gen_carpetaexclusiva heb412_gen_carpetaexclusiva_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heb412_gen_carpetaexclusiva
+    ADD CONSTRAINT heb412_gen_carpetaexclusiva_pkey PRIMARY KEY (id);
 
 
 --
@@ -1899,6 +2081,14 @@ ALTER TABLE ONLY public.mr519_gen_opcioncs
 
 
 --
+-- Name: mr519_gen_planencuesta mr519_gen_planencuesta_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.mr519_gen_planencuesta
+    ADD CONSTRAINT mr519_gen_planencuesta_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: mr519_gen_respuestafor mr519_gen_respuestafor_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1944,22 +2134,6 @@ ALTER TABLE ONLY public.sip_pais
 
 ALTER TABLE ONLY public.sip_persona
     ADD CONSTRAINT persona_pkey PRIMARY KEY (id);
-
-
---
--- Name: sip_actorsocial_persona sip_actorsocial_persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_actorsocial_persona
-    ADD CONSTRAINT sip_actorsocial_persona_pkey PRIMARY KEY (id);
-
-
---
--- Name: sip_actorsocial sip_actorsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sip_actorsocial
-    ADD CONSTRAINT sip_actorsocial_pkey PRIMARY KEY (id);
 
 
 --
@@ -2019,11 +2193,27 @@ ALTER TABLE ONLY public.sip_grupoper
 
 
 --
--- Name: sip_perfilactorsocial sip_perfilactorsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_orgsocial_persona sip_orgsocial_persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_perfilactorsocial
-    ADD CONSTRAINT sip_perfilactorsocial_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.sip_orgsocial_persona
+    ADD CONSTRAINT sip_orgsocial_persona_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_orgsocial sip_orgsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_orgsocial
+    ADD CONSTRAINT sip_orgsocial_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_perfilorgsocial sip_perfilorgsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_perfilorgsocial
+    ADD CONSTRAINT sip_perfilorgsocial_pkey PRIMARY KEY (id);
 
 
 --
@@ -2059,11 +2249,11 @@ ALTER TABLE ONLY public.sip_persona_trelacion
 
 
 --
--- Name: sip_sectoractor sip_sectoractor_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_sectororgsocial sip_sectororgsocial_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_sectoractor
-    ADD CONSTRAINT sip_sectoractor_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.sip_sectororgsocial
+    ADD CONSTRAINT sip_sectororgsocial_pkey PRIMARY KEY (id);
 
 
 --
@@ -2080,6 +2270,14 @@ ALTER TABLE ONLY public.sip_tema
 
 ALTER TABLE ONLY public.sip_trivalente
     ADD CONSTRAINT sip_trivalente_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_ubicacionpre sip_ubicacionpre_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacionpre
+    ADD CONSTRAINT sip_ubicacionpre_pkey PRIMARY KEY (id);
 
 
 --
@@ -2145,17 +2343,17 @@ CREATE UNIQUE INDEX index_mr519_gen_encuestapersona_on_adurl ON public.mr519_gen
 
 
 --
--- Name: index_sip_actorsocial_on_grupoper_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_sip_orgsocial_on_grupoper_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sip_actorsocial_on_grupoper_id ON public.sip_actorsocial USING btree (grupoper_id);
+CREATE INDEX index_sip_orgsocial_on_grupoper_id ON public.sip_orgsocial USING btree (grupoper_id);
 
 
 --
--- Name: index_sip_actorsocial_on_pais_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_sip_orgsocial_on_pais_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sip_actorsocial_on_pais_id ON public.sip_actorsocial USING btree (pais_id);
+CREATE INDEX index_sip_orgsocial_on_pais_id ON public.sip_orgsocial USING btree (pais_id);
 
 
 --
@@ -2208,6 +2406,13 @@ CREATE INDEX sip_busca_mundep ON public.sip_mundep USING gin (mundep);
 
 
 --
+-- Name: sip_nombre_ubicacionpre_b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_nombre_ubicacionpre_b ON public.sip_ubicacionpre USING gin (to_tsvector('spanish'::regconfig, public.f_unaccent((nombre)::text)));
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2244,6 +2449,14 @@ ALTER TABLE ONLY public.sip_departamento
 
 ALTER TABLE ONLY public.sip_municipio
     ADD CONSTRAINT fk_rails_089870a38d FOREIGN KEY (id_departamento) REFERENCES public.sip_departamento(id);
+
+
+--
+-- Name: sip_etiqueta_municipio fk_rails_10d88626c3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_etiqueta_municipio
+    ADD CONSTRAINT fk_rails_10d88626c3 FOREIGN KEY (etiqueta_id) REFERENCES public.sip_etiqueta(id);
 
 
 --
@@ -2295,10 +2508,26 @@ ALTER TABLE ONLY public.heb412_gen_doc
 
 
 --
--- Name: sip_actorsocial_persona fk_rails_4672f6cbcd; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_ubicacionpre fk_rails_2e86701dfb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_actorsocial_persona
+ALTER TABLE ONLY public.sip_ubicacionpre
+    ADD CONSTRAINT fk_rails_2e86701dfb FOREIGN KEY (departamento_id) REFERENCES public.sip_departamento(id);
+
+
+--
+-- Name: sip_ubicacionpre fk_rails_3b59c12090; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacionpre
+    ADD CONSTRAINT fk_rails_3b59c12090 FOREIGN KEY (clase_id) REFERENCES public.sip_clase(id);
+
+
+--
+-- Name: sip_orgsocial_persona fk_rails_4672f6cbcd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_orgsocial_persona
     ADD CONSTRAINT fk_rails_4672f6cbcd FOREIGN KEY (persona_id) REFERENCES public.sip_persona(id);
 
 
@@ -2319,10 +2548,18 @@ ALTER TABLE ONLY public.mr519_gen_encuestapersona
 
 
 --
--- Name: sip_actorsocial fk_rails_5b21e3a2af; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_etiqueta_municipio fk_rails_5672729520; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_actorsocial
+ALTER TABLE ONLY public.sip_etiqueta_municipio
+    ADD CONSTRAINT fk_rails_5672729520 FOREIGN KEY (municipio_id) REFERENCES public.sip_municipio(id);
+
+
+--
+-- Name: sip_orgsocial fk_rails_5b21e3a2af; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_orgsocial
     ADD CONSTRAINT fk_rails_5b21e3a2af FOREIGN KEY (grupoper_id) REFERENCES public.sip_grupoper(id);
 
 
@@ -2367,19 +2604,19 @@ ALTER TABLE ONLY public.sip_grupo_usuario
 
 
 --
--- Name: sip_actorsocial fk_rails_7bc2a60574; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_orgsocial fk_rails_7bc2a60574; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_actorsocial
+ALTER TABLE ONLY public.sip_orgsocial
     ADD CONSTRAINT fk_rails_7bc2a60574 FOREIGN KEY (pais_id) REFERENCES public.sip_pais(id);
 
 
 --
--- Name: sip_actorsocial_persona fk_rails_7c335482f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_orgsocial_persona fk_rails_7c335482f6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_actorsocial_persona
-    ADD CONSTRAINT fk_rails_7c335482f6 FOREIGN KEY (actorsocial_id) REFERENCES public.sip_actorsocial(id);
+ALTER TABLE ONLY public.sip_orgsocial_persona
+    ADD CONSTRAINT fk_rails_7c335482f6 FOREIGN KEY (orgsocial_id) REFERENCES public.sip_orgsocial(id);
 
 
 --
@@ -2447,11 +2684,11 @@ ALTER TABLE ONLY public.usuario
 
 
 --
--- Name: sip_actorsocial_sectoractor fk_rails_9f61a364e0; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_orgsocial_sectororgsocial fk_rails_9f61a364e0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_actorsocial_sectoractor
-    ADD CONSTRAINT fk_rails_9f61a364e0 FOREIGN KEY (sectoractor_id) REFERENCES public.sip_sectoractor(id);
+ALTER TABLE ONLY public.sip_orgsocial_sectororgsocial
+    ADD CONSTRAINT fk_rails_9f61a364e0 FOREIGN KEY (sectororgsocial_id) REFERENCES public.sip_sectororgsocial(id);
 
 
 --
@@ -2476,6 +2713,22 @@ ALTER TABLE ONLY public.sip_ubicacion
 
 ALTER TABLE ONLY public.sip_ubicacion
     ADD CONSTRAINT fk_rails_b82283d945 FOREIGN KEY (id_municipio) REFERENCES public.sip_municipio(id);
+
+
+--
+-- Name: sip_ubicacionpre fk_rails_c08a606417; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacionpre
+    ADD CONSTRAINT fk_rails_c08a606417 FOREIGN KEY (municipio_id) REFERENCES public.sip_municipio(id);
+
+
+--
+-- Name: sip_ubicacionpre fk_rails_c8024a90df; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_ubicacionpre
+    ADD CONSTRAINT fk_rails_c8024a90df FOREIGN KEY (tsitio_id) REFERENCES public.sip_tsitio(id);
 
 
 --
@@ -2519,19 +2772,27 @@ ALTER TABLE ONLY public.usuario
 
 
 --
--- Name: mr519_gen_encuestausuario fk_rails_eccb6f9972; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: heb412_gen_carpetaexclusiva fk_rails_ea1add81e6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.mr519_gen_encuestausuario
-    ADD CONSTRAINT fk_rails_eccb6f9972 FOREIGN KEY (formulario_id) REFERENCES public.mr519_gen_formulario(id);
+ALTER TABLE ONLY public.heb412_gen_carpetaexclusiva
+    ADD CONSTRAINT fk_rails_ea1add81e6 FOREIGN KEY (grupo_id) REFERENCES public.sip_grupo(id);
 
 
 --
--- Name: sip_actorsocial_sectoractor fk_rails_f032bb21a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_ubicacionpre fk_rails_eba8cc9124; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sip_actorsocial_sectoractor
-    ADD CONSTRAINT fk_rails_f032bb21a6 FOREIGN KEY (actorsocial_id) REFERENCES public.sip_actorsocial(id);
+ALTER TABLE ONLY public.sip_ubicacionpre
+    ADD CONSTRAINT fk_rails_eba8cc9124 FOREIGN KEY (pais_id) REFERENCES public.sip_pais(id);
+
+
+--
+-- Name: sip_orgsocial_sectororgsocial fk_rails_f032bb21a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_orgsocial_sectororgsocial
+    ADD CONSTRAINT fk_rails_f032bb21a6 FOREIGN KEY (orgsocial_id) REFERENCES public.sip_orgsocial(id);
 
 
 --
@@ -2743,6 +3004,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190605143420'),
 ('20190612111043'),
 ('20190618135559'),
+('20190625112649'),
 ('20190625140232'),
 ('20190703044126'),
 ('20190715083916'),
@@ -2764,6 +3026,25 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200405182339'),
 ('20200406022353'),
 ('20200406222756'),
-('20200407032317');
+('20200407032317'),
+('20200722210144'),
+('20200723133542'),
+('20200727021707'),
+('20200907165157'),
+('20200907174303'),
+('20200916022934'),
+('20200919003430'),
+('20200921123831'),
+('20201009004421'),
+('20201119125643'),
+('20201214215209'),
+('20210401194637'),
+('20210401210102'),
+('20210414201956'),
+('20210430160739'),
+('20210614120835'),
+('20210616003251'),
+('20210619191706'),
+('20210728214424');
 
 
