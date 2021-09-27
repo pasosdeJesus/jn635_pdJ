@@ -58,7 +58,7 @@ gem 'twitter_cldr'
 
 gem 'tzinfo'
 
-gem 'webpacker'
+gem 'webpacker', '6.0.0.rc.1'
 
 gem 'will_paginate'
 
