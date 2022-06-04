@@ -113,10 +113,6 @@ group :development do
 end
 
 group :test do
-  gem 'cuprite'
-
-  gem 'capybara'
-
   gem 'rails-controller-testing'
 
   gem 'simplecov'
