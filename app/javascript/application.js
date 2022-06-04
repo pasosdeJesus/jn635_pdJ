@@ -46,6 +46,23 @@ document.addEventListener('turbo:load', (e) => {
   console.log('Escuchador turbo:load')
 
   sip_ejecutarAlCargarPagina(window)
+
+  var root;
+  root = window;
+  sip_prepara_eventos_comunes(root, null, false);
+  heb412_gen_prepara_eventos_comunes(root);
+  //mr519_gen_prepara_eventos_comunes(root);
+
+  $(document).on('change', 'select[id$=_departamento]', (e) => {
+    debugger
+    llena_municipio($(e.target), root, true)
+  }
+  )
+  $(document).on('change', 'select[id$=_municipio]', (e) => {
+    llena_clase($(e.target), root, true)
+  }
+  )
+
 })
 
 

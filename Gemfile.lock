@@ -111,6 +111,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
     andand (1.3.3)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
@@ -123,8 +125,18 @@ GEM
     builder (3.2.4)
     camertron-eprun (1.1.1)
     cancancan (3.3.0)
+    capybara (3.37.1)
+      addressable
+      matrix
+      mini_mime (>= 0.1.3)
+      nokogiri (~> 1.8)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      regexp_parser (>= 1.5, < 3.0)
+      xpath (~> 3.2)
     cldr-plurals-runtime-rb (1.1.0)
     climate_control (0.2.0)
+    cliver (0.3.2)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
       railties (>= 5.2.0)
@@ -136,6 +148,9 @@ GEM
     concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
     crass (1.0.6)
+    cuprite (0.13)
+      capybara (>= 2.1, < 4)
+      ferrum (~> 0.11.0)
     devise (4.8.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -152,6 +167,11 @@ GEM
       railties (>= 3.2)
     erubi (1.10.0)
     execjs (2.8.1)
+    ferrum (0.11)
+      addressable (~> 2.5)
+      cliver (~> 0.3)
+      concurrent-ruby (~> 1.1)
+      websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -219,6 +239,7 @@ GEM
     prawnto_2 (0.3.1)
       prawn (>= 1.0.0)
       rails (>= 3.2)
+    public_suffix (4.0.7)
     puma (5.6.4)
       nio4r (~> 2.0)
     racc (1.6.0)
@@ -239,6 +260,10 @@ GEM
       activesupport (= 7.0.3)
       bundler (>= 1.15.0)
       railties (= 7.0.3)
+    rails-controller-testing (1.0.5)
+      actionpack (>= 5.0.1.rc1)
+      actionview (>= 5.0.1.rc1)
+      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -263,6 +288,7 @@ GEM
       railties (>= 3.2)
       tilt
     redcarpet (3.5.1)
+    regexp_parser (2.5.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -328,6 +354,8 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     will_paginate (3.3.1)
+    xpath (3.2.0)
+      nokogiri (~> 1.8)
     zeitwerk (2.5.4)
 
 PLATFORMS
@@ -338,9 +366,11 @@ DEPENDENCIES
   bcrypt
   bootsnap (>= 1.1.0)
   cancancan
+  capybara
   cocoon!
   coffee-rails
   colorize
+  cuprite
   devise
   devise-i18n
   dotenv-rails
@@ -360,6 +390,7 @@ DEPENDENCIES
   prawnto_2
   puma
   rails
+  rails-controller-testing
   rails-i18n
   react-rails
   redcarpet
