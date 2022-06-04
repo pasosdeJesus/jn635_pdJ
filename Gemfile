@@ -8,6 +8,8 @@ end
 
 gem 'bcrypt'
 
+gem 'babel-transpiler'
+
 gem 'bootsnap', '>=1.1.0', require: false
 
 gem 'cancancan'
@@ -22,6 +24,8 @@ gem 'devise'
 gem 'devise-i18n'
 
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+
+gem 'jsbundling-rails'
 
 gem 'kt-paperclip'
 
@@ -59,11 +63,16 @@ gem 'sassc-rails' # Use SCSS for stylesheets
 
 gem 'simple_form'
 
+gem 'sprockets-rails'
+
+gem 'stimulus-rails'
+
+gem 'turbo-rails'
+
 gem 'twitter_cldr' 
 
 gem 'tzinfo'
 
-gem 'webpacker', '6.0.0.rc.1'
 
 gem 'will_paginate'
 

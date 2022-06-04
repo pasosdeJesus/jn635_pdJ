@@ -17,7 +17,7 @@ y lo que esperamos de quien se escriba en:
       <%= render partial: 'formulario_inicial', locals: {f: f} %>
 
       <div class="form-actions">
-        <%= f.button :submit, "Inscribirse" %>
+        <%= f.button :submit, "Inscribirse", "data-turbo" => false  %>
       </div>
     <% end %>
     <%= render "devise/shared/links" %>

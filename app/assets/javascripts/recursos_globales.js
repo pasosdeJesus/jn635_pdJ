@@ -15,10 +15,9 @@
 //= require heb412_gen/motor
 //= require_tree .
 
-document.addEventListener('turbolinks:load', function() {
+document.addEventListener('turbo:load', function() {
   var root;
-  root = typeof exports !== "undefined" && exports !== null ? 
-    exports : window;
+  root = window;
   sip_prepara_eventos_comunes(root, null, false);
   heb412_gen_prepara_eventos_comunes(root);
   //mr519_gen_prepara_eventos_comunes(root);
