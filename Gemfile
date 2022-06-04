@@ -29,14 +29,19 @@ gem 'lazybox' # Dialogo modal
 
 gem 'libxml-ruby'
 
+gem 'matrix'
+
 gem 'nokogiri', '>=1.11.1'
 
 gem 'odf-report' # Genera ODT
 
 gem 'prawn' # Para generar PDF
 
-gem 'pg'  # Use postgresql as the database for Active Record
+gem 'prawnto_2',  :require => 'prawnto'
 
+gem 'prawn-table'
+
+gem 'pg'  # Use postgresql as the database for Active Record
 
 gem 'rails' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 

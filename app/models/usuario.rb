@@ -14,13 +14,13 @@ class Usuario < ActiveRecord::Base
     validate: true, class_name: "Sip::Clase", optional: true
 
   belongs_to :departamento, foreign_key: "departamento_id", 
-    validate: true, class_name: "Sip::Departamento"
+    validate: true, class_name: "Sip::Departamento", optional: true
 
   belongs_to :grupo, foreign_key: "grupo_id", 
-    validate: true, class_name: "Sip::Grupo"
+    validate: true, class_name: "Sip::Grupo", optional: true
 
   belongs_to :municipio, foreign_key: "municipio_id", 
-    validate: true, class_name: "Sip::Municipio"
+    validate: true, class_name: "Sip::Municipio", optional: true
 
   def email_required?
     true
@@ -32,7 +32,7 @@ class Usuario < ActiveRecord::Base
   validates_presence_of :apellidos
 
   validates_presence_of :departamento_id
-  
+
   validates_presence_of :municipio_id
 
   validates_length_of :barrio_vereda, maximum: 128

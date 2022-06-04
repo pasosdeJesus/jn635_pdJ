@@ -31,6 +31,22 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: completa_obs(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.completa_obs(obs character varying, nuevaobs character varying) RETURNS character varying
+    LANGUAGE plpgsql
+    AS $$
+      BEGIN
+        RETURN CASE WHEN obs IS NULL THEN nuevaobs
+          WHEN obs='' THEN nuevaobs
+          WHEN RIGHT(obs, 1)='.' THEN obs || ' ' || nuevaobs
+          ELSE obs || '. ' || nuevaobs
+        END;
+      END; $$;
+
+
+--
 -- Name: f_unaccent(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -912,6 +928,8 @@ CREATE TABLE public.sip_departamento (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    codiso character varying(6),
+    catiso character varying(64),
     CONSTRAINT departamento_check CHECK (((fechadeshabilitacion IS NULL) OR (fechadeshabilitacion >= fechacreacion)))
 );
 
@@ -1173,7 +1191,8 @@ CREATE TABLE public.sip_orgsocial (
     web character varying(500),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    fechadeshabilitacion date
+    fechadeshabilitacion date,
+    tipoorg_id integer DEFAULT 2 NOT NULL
 );
 
 
@@ -1260,7 +1279,7 @@ CREATE SEQUENCE public.sip_pais_id_seq
 CREATE TABLE public.sip_pais (
     id integer DEFAULT nextval('public.sip_pais_id_seq'::regclass) NOT NULL,
     nombre character varying(200) COLLATE public.es_co_utf_8,
-    nombreiso character varying(200),
+    nombreiso_espanol character varying(200),
     latitud double precision,
     longitud double precision,
     alfa2 character varying(2),
@@ -1273,8 +1292,47 @@ CREATE TABLE public.sip_pais (
     fechadeshabilitacion date,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    observaciones character varying(5000) COLLATE public.es_co_utf_8
+    observaciones character varying(5000) COLLATE public.es_co_utf_8,
+    nombreiso_ingles character varying(512),
+    nombreiso_frances character varying(512),
+    ultvigenciaini date,
+    ultvigenciafin date
 );
+
+
+--
+-- Name: sip_pais_histvigencia; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_pais_histvigencia (
+    id bigint NOT NULL,
+    pais_id integer,
+    vigenciaini date,
+    vigenciafin date NOT NULL,
+    codiso integer,
+    alfa2 character varying(2),
+    alfa3 character varying(3),
+    codcambio character varying(4)
+);
+
+
+--
+-- Name: sip_pais_histvigencia_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_pais_histvigencia_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_pais_histvigencia_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_pais_histvigencia_id_seq OWNED BY public.sip_pais_histvigencia.id;
 
 
 --
@@ -1516,6 +1574,40 @@ CREATE SEQUENCE public.sip_tema_id_seq
 --
 
 ALTER SEQUENCE public.sip_tema_id_seq OWNED BY public.sip_tema.id;
+
+
+--
+-- Name: sip_tipoorg; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sip_tipoorg (
+    id bigint NOT NULL,
+    nombre character varying(500) NOT NULL COLLATE public.es_co_utf_8,
+    observaciones character varying(5000),
+    fechacreacion date NOT NULL,
+    fechadeshabilitacion date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: sip_tipoorg_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sip_tipoorg_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sip_tipoorg_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sip_tipoorg_id_seq OWNED BY public.sip_tipoorg.id;
 
 
 --
@@ -1895,6 +1987,13 @@ ALTER TABLE ONLY public.sip_orgsocial_persona ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: sip_pais_histvigencia id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_pais_histvigencia ALTER COLUMN id SET DEFAULT nextval('public.sip_pais_histvigencia_id_seq'::regclass);
+
+
+--
 -- Name: sip_perfilorgsocial id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1920,6 +2019,13 @@ ALTER TABLE ONLY public.sip_tdocumento ALTER COLUMN id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.sip_tema ALTER COLUMN id SET DEFAULT nextval('public.sip_tema_id_seq'::regclass);
+
+
+--
+-- Name: sip_tipoorg id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_tipoorg ALTER COLUMN id SET DEFAULT nextval('public.sip_tipoorg_id_seq'::regclass);
 
 
 --
@@ -2145,6 +2251,14 @@ ALTER TABLE ONLY public.sip_bitacora
 
 
 --
+-- Name: sip_clase sip_clase_id_municipio_id_clalocal_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_clase
+    ADD CONSTRAINT sip_clase_id_municipio_id_clalocal_key UNIQUE (id_municipio, id_clalocal);
+
+
+--
 -- Name: sip_departamento sip_departamento_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2153,11 +2267,11 @@ ALTER TABLE ONLY public.sip_departamento
 
 
 --
--- Name: sip_departamento sip_departamento_id_pais_id_deplocal_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sip_departamento sip_departamento_id_pais_id_deplocal_unico; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.sip_departamento
-    ADD CONSTRAINT sip_departamento_id_pais_id_deplocal_key UNIQUE (id_pais, id_deplocal);
+    ADD CONSTRAINT sip_departamento_id_pais_id_deplocal_unico UNIQUE (id_pais, id_deplocal);
 
 
 --
@@ -2193,6 +2307,14 @@ ALTER TABLE ONLY public.sip_grupoper
 
 
 --
+-- Name: sip_municipio sip_municipio_id_departamento_id_munlocal_unico; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_municipio
+    ADD CONSTRAINT sip_municipio_id_departamento_id_munlocal_unico UNIQUE (id_departamento, id_munlocal);
+
+
+--
 -- Name: sip_orgsocial_persona sip_orgsocial_persona_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2206,6 +2328,22 @@ ALTER TABLE ONLY public.sip_orgsocial_persona
 
 ALTER TABLE ONLY public.sip_orgsocial
     ADD CONSTRAINT sip_orgsocial_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_pais sip_pais_codiso_unico; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_pais
+    ADD CONSTRAINT sip_pais_codiso_unico UNIQUE (codiso);
+
+
+--
+-- Name: sip_pais_histvigencia sip_pais_histvigencia_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_pais_histvigencia
+    ADD CONSTRAINT sip_pais_histvigencia_pkey PRIMARY KEY (id);
 
 
 --
@@ -2262,6 +2400,14 @@ ALTER TABLE ONLY public.sip_sectororgsocial
 
 ALTER TABLE ONLY public.sip_tema
     ADD CONSTRAINT sip_tema_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sip_tipoorg sip_tipoorg_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sip_tipoorg
+    ADD CONSTRAINT sip_tipoorg_pkey PRIMARY KEY (id);
 
 
 --
@@ -2410,6 +2556,20 @@ CREATE INDEX sip_busca_mundep ON public.sip_mundep USING gin (mundep);
 --
 
 CREATE INDEX sip_nombre_ubicacionpre_b ON public.sip_ubicacionpre USING gin (to_tsvector('spanish'::regconfig, public.f_unaccent((nombre)::text)));
+
+
+--
+-- Name: sip_persona_anionac_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_persona_anionac_ind ON public.sip_persona USING btree (anionac);
+
+
+--
+-- Name: sip_persona_sexo_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX sip_persona_sexo_ind ON public.sip_persona USING btree (sexo);
 
 
 --
@@ -3045,6 +3205,20 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210614120835'),
 ('20210616003251'),
 ('20210619191706'),
-('20210728214424');
+('20210728214424'),
+('20211010164634'),
+('20211024105450'),
+('20211117200456'),
+('20211216125250'),
+('20220213031520'),
+('20220214121713'),
+('20220413123127'),
+('20220417203841'),
+('20220417220914'),
+('20220417221010'),
+('20220420143020'),
+('20220420154535'),
+('20220422190546'),
+('20220428145059');
 
 
