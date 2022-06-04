@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require 'devise/registrations_controller'
 require 'mail'
 

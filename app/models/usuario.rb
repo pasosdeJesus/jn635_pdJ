@@ -1,9 +1,7 @@
-# encoding: UTF-8
-
-require 'sip/concerns/models/usuario'
+require 'mr519_gen/concerns/models/usuario'
 
 class Usuario < ActiveRecord::Base
-  include Sip::Concerns::Models::Usuario
+  include Mr519Gen::Concerns::Models::Usuario
 
   devise :registerable, :confirmable
   campofecha_localizado :confirmed_at
@@ -26,26 +24,23 @@ class Usuario < ActiveRecord::Base
     true
   end
 
-  validates_presence_of :nombres
+  validates :nombres, presence: true
 
-  validates_length_of :apellidos, maximum: 128
-  validates_presence_of :apellidos
+  validates :apellidos, length: {maximum: 128}, presence: true
 
-  validates_presence_of :departamento_id
+  validates :departamento_id, presence: true
 
-  validates_presence_of :municipio_id
+  validates :municipio_id, presence: true
 
-  validates_length_of :barrio_vereda, maximum: 128
-  validates_presence_of :barrio_vereda
+  validates :barrio_vereda, length: {maximum: 128}, presence: true
 
-  validates_length_of :telefono, maximum: 128
-  validates_presence_of :telefono
+  validates :telefono, length: { maximum: 128 }, presence: true
 
-  validates_length_of :web, maximum: 1024
+  validates :web, length: {maximum: 1024}
 
-  validates_length_of :facebook, maximum: 1024
+  validates :facebook, length: {maximum: 1024}
 
-  validates_length_of :twitter, maximum: 1024
+  validates :twitter, length: {maximum: 1024}
 
   def presenta_nombre
     r = self.nusuario
@@ -57,7 +52,6 @@ class Usuario < ActiveRecord::Base
     end
     r 
   end
-
 
   scope :filtro_departamento_id, lambda { |d|
     where(departamento_id: d)

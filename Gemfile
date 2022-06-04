@@ -53,8 +53,6 @@ gem 'rails-i18n'
 
 gem 'redcarpet'
 
-gem 'react-rails'
-
 gem 'rubyzip', '>= 2.0'
 
 gem 'rspreadsheet'
